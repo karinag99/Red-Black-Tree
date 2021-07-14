@@ -38,7 +38,7 @@ public:
     /**
      * @brief if parent exists returns whether the node is left child otherwise return false
      */
-    bool is_left_child() noexcept const
+    bool is_left_child() const
     {
         return parent ? this == parent->left : false;
     }
