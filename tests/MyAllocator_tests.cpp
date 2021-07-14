@@ -1,8 +1,5 @@
-#define CATCH_CONFIG_MAIN
-
 #include "../catch.hpp"
 #include "../MyAllocator.hpp"
-#include <iostream>
 
 SCENARIO("Testing allocator behavior")
 {
@@ -99,7 +96,7 @@ SCENARIO("Testing allocator behavior")
             {
                 REQUIRE(*frt_elem == 8);
             }
-            
+
             alloc.deallocate(frt_elem);
         }
 
