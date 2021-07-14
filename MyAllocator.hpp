@@ -1,7 +1,6 @@
 #ifndef _ALLOCATOR_
 #define _ALLOCATOR_
 
-#include "Node.cpp"
 #include <unordered_set>
 
 template <class Type>
