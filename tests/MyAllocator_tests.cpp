@@ -1,5 +1,8 @@
-#include "catch.hpp"
-#include "MyAllocator.hpp"
+#define CATCH_CONFIG_MAIN
+
+#include "../catch.hpp"
+#include "../MyAllocator.hpp"
+#include <iostream>
 
 SCENARIO("Testing allocator behavior")
 {
@@ -25,6 +28,8 @@ SCENARIO("Testing allocator behavior")
             {
                 CHECK(alloc.is_allocated(new_elem));
             }
+
+            alloc.deallocate(new_elem);
         }
 
         WHEN("A new element is allocated with parameterized constructor")
@@ -45,6 +50,8 @@ SCENARIO("Testing allocator behavior")
             {
                 REQUIRE(*new_elem == 5);
             }
+
+            alloc.deallocate(new_elem);
         }   
     }
 
@@ -92,7 +99,22 @@ SCENARIO("Testing allocator behavior")
             {
                 REQUIRE(*frt_elem == 8);
             }
+            
+            alloc.deallocate(frt_elem);
         }
+
+        alloc.deallocate(fst_elem);
+        alloc.deallocate(snd_elem);
+        alloc.deallocate(trd_elem); 
+    }
+
+    GIVEN("Given a non-empty allocator")
+    {
+        MyAllocator<int> alloc;
+
+        int* fst_elem = alloc.allocate();
+        int* snd_elem = alloc.allocate(3);
+        int* trd_elem = alloc.allocate(7);
 
         WHEN("An element that is not beeing allocated is deallocated")
         {
@@ -102,6 +124,12 @@ SCENARIO("Testing allocator behavior")
             {
                 REQUIRE_THROWS_AS(alloc.deallocate(not_allocated), std::invalid_argument);
             }
+
+            delete not_allocated;
+
+            alloc.deallocate(fst_elem);
+            alloc.deallocate(snd_elem);
+            alloc.deallocate(trd_elem);
         }
 
         WHEN("An allocated element is deallocated")
@@ -128,6 +156,9 @@ SCENARIO("Testing allocator behavior")
             {
                 REQUIRE(*trd_elem == 7);
             }
+
+            alloc.deallocate(fst_elem);
+            alloc.deallocate(trd_elem);
         }
     }
 }
