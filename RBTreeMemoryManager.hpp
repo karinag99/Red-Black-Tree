@@ -13,13 +13,13 @@ protected:
     node_ptr null_node;
     MyAllocator<Node<Type>> alloc;
 
-    void free_helper(node_ptr node)
+    void delete_not_null_nodes(node_ptr node)
     {
         if(node == null_node)
             return;
 
-        free_helper(node->left);
-        free_helper(node->right);
+        delete_not_null_nodes(node->left);
+        delete_not_null_nodes(node->right);
 
         alloc.deallocate(node);
     }
@@ -46,9 +46,9 @@ private:
         root = copy_helper(null_node, other.root, other.null_node);
     }
 
-    void free()
+    void delete_all_nodes()
     {
-        free_helper(root);
+        delete_not_null_nodes(root);
         alloc.deallocate(null_node);
     }
 
@@ -68,7 +68,7 @@ public:
     {
         if(this != &other)
         {
-            free();
+            delete_all_nodes();
             copy(other);
         }
 
@@ -77,7 +77,7 @@ public:
 
     ~RBTreeMemoryManager()
     {
-        free();
+        delete_all_nodes();
     }
 };
 
