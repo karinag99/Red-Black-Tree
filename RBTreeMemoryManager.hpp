@@ -7,10 +7,10 @@
 template <class Type, class Allocator = MyAllocator<Node<Type>>>
 class RBTreeMemoryManager{
 protected:
-    using node_ptr        = Node<Type>*;
+    using node_ptr = Node<Type>*;
 
-    node_ptr                root;
-    node_ptr                null_node;
+    node_ptr root;
+    node_ptr null_node;
     MyAllocator<Node<Type>> alloc;
 
     void free_helper(node_ptr node)
