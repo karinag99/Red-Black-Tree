@@ -1,5 +1,5 @@
-#ifndef RBTREE_MEMORY_MANAGER
-#define RBTREE_MEMORY_MANAGER
+#ifndef _RBTREE_MEMORY_MANAGER_
+#define _RBTREE_MEMORY_MANAGER_
 
 #include "Node.hpp"
 #include "MyAllocator.hpp"

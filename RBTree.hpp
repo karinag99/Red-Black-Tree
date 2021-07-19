@@ -1,5 +1,5 @@
-#ifndef RED_BLACK_TREE
-#define RED_BLACK_TREE
+#ifndef _RED_BLACK_TREE_
+#define _RED_BLACK_TREE_
 
 #include "Node.hpp"
 #include "MyAllocator.hpp"
