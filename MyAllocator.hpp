@@ -22,6 +22,11 @@ public:
         return temp;
     }
 
+    /**
+     * @brief allocates an object using a specific constructor with parameters 
+     * - the arguments of the constructor are passed using perfect forwarding
+     * @param args - the parmeters of the constructor
+     */
     template <class... Args>
     Type* allocate(Args&&... args)
     {
