@@ -56,19 +56,18 @@ private:
 
     node_ptr get_successor(node_ptr node) const
     {
-        while(node->left)
+        while(node->left != null_node)
             node = node->left;
 
         return node;         
     }
 
-    void swap_delete_node_with_successor(node_ptr& delete_helper, node_ptr& successor, 
+    void swap_values_of_delete_node_and_successor(node_ptr& delete_node, node_ptr& successor, 
                                          node_ptr& fixup_node, NodeColor& node_color)
     {
-        std::swap(successor->value, delete_helper->value);
+        std::swap(successor->value, delete_node->value);
         fixup_node = successor->right;
         node_color = successor->color;
-        delete_helper = successor;
     }
 
     void fix_right_child(node_ptr& delete_node, node_ptr& successor)
@@ -101,6 +100,10 @@ private:
     }
 
 public:
+    /**
+     * @brief inserts a new element in the tree by conecting it to its parent and fixing the tree
+     *  if a violation has been caused
+     */
     void insert(const Type& value)
     {
         node_ptr parent = get_parent(value);
@@ -116,7 +119,20 @@ public:
         insert_fixup(new_node);
     }
 
-    void delete_node(const Type& value)
+    /**
+     * @brief erases an element from the tree
+     * if there is no such element - throws an exception
+     * if the node that contains the element has no childrem ot no left child
+     *  then the tree with root - the deleted node is swapped with its right subtree
+     * if the node that contains the element no right child
+     *  then the tree with root - the deleted node is swapped with its left subtree
+     * if the node that contains the element has both left and right child
+     *  then the value of the deleted node is swapped with its successors value
+     *  and if the successors parent is the deleted node
+     *   then the right child of the deleted node is fixed
+     *  otherwise the tree with root - the successor is swapped with its right subtree
+     */
+    void erase(const Type& value)
     {
         node_ptr delete_node = find_node_with_value(value);
 
@@ -138,13 +154,15 @@ public:
         }
         else
         {
-            node_ptr successor = get_successor(delete_node);
-            swap_delete_node_with_successor(delete_node, successor, fixup_node, deleted_node_color);
+            node_ptr successor = get_successor(delete_node->right);
+            swap_values_of_delete_node_and_successor(delete_node, successor, fixup_node, deleted_node_color);
 
             if(successor->parent == delete_node)
-                fix_right_child(delete_node, successor);                                              
+                fix_right_child(delete_node, successor);                                         
             else               
-                transplant(successor, successor->right);               
+                transplant(successor, successor->right);  
+
+            delete_node = successor;             
         }
 
         alloc.deallocate(delete_node);  
